@@ -10,93 +10,60 @@
 //  KIND, either express or implied.  See the License for the
 //  specific language governing permissions and limitations
 //  under the License.
-//
-//  EditorWithSwiftUIToolbar.swift
-//  InfomaniakRichHTMLEditor
-//
-//  Created by William Mead on 13/05/2026.
-//
 
-import SwiftUI
 import InfomaniakRichHTMLEditor
+import SwiftUI
 
-// MARK: - SwiftUI toolbar view
 struct EditorSwiftUIToolbarContent: View {
     @ObservedObject var textAttributes: TextAttributes
 
     var body: some View {
         ScrollView(.horizontal) {
-            HStack(spacing: 12) {
-                // Text formatting
-                EditorToolbarButton(
-                    systemImage: "bold",
-                    isActive: textAttributes.hasBold
-                ) {
+            HStack(spacing: 4) {
+                EditorToolbarButton(systemImage: "bold", isActive: textAttributes.hasBold) {
                     textAttributes.bold()
                 }
-                EditorToolbarButton(
-                    systemImage: "italic",
-                    isActive: textAttributes.hasItalic
-                ) {
+                EditorToolbarButton(systemImage: "italic", isActive: textAttributes.hasItalic) {
                     textAttributes.italic()
                 }
-                EditorToolbarButton(
-                    systemImage: "underline",
-                    isActive: textAttributes.hasUnderline
-                ) {
+                EditorToolbarButton(systemImage: "underline", isActive: textAttributes.hasUnderline) {
                     textAttributes.underline()
                 }
-                EditorToolbarButton(
-                    systemImage: "strikethrough",
-                    isActive: textAttributes.hasStrikethrough
-                ) {
+                EditorToolbarButton(systemImage: "strikethrough", isActive: textAttributes.hasStrikethrough) {
                     textAttributes.strikethrough()
                 }
-                Divider().frame(height: 20)
-                // Lists
-                EditorToolbarButton(
-                    systemImage: "list.number",
-                    isActive: textAttributes.hasOrderedList
-                ) {
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "list.number", isActive: textAttributes.hasOrderedList) {
                     textAttributes.orderedList()
                 }
-                EditorToolbarButton(
-                    systemImage: "list.bullet",
-                    isActive: textAttributes.hasUnorderedList
-                ) {
+                EditorToolbarButton(systemImage: "list.bullet", isActive: textAttributes.hasUnorderedList) {
                     textAttributes.unorderedList()
                 }
-                Divider().frame(height: 20)
-                // Indentation
-                EditorToolbarButton(
-                    systemImage: "decrease.indent",
-                    isActive: false
-                ) {
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "decrease.indent", isActive: false) {
                     textAttributes.outdent()
                 }
-                EditorToolbarButton(
-                    systemImage: "increase.indent",
-                    isActive: false
-                ) {
+                EditorToolbarButton(systemImage: "increase.indent", isActive: false) {
                     textAttributes.indent()
                 }
-                Divider().frame(height: 20)
-                // Undo / Redo
-                EditorToolbarButton(
-                    systemImage: "arrow.uturn.backward",
-                    isActive: false
-                ) {
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "arrow.uturn.backward", isActive: false) {
                     textAttributes.undo()
                 }
-                EditorToolbarButton(
-                    systemImage: "arrow.uturn.forward",
-                    isActive: false
-                ) {
+                EditorToolbarButton(systemImage: "arrow.uturn.forward", isActive: false) {
                     textAttributes.redo()
                 }
             }
-            .fixedSize(horizontal: true, vertical: false)
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 4)
         }
         .scrollIndicators(.hidden)
         .frame(height: 44)
@@ -106,8 +73,8 @@ struct EditorSwiftUIToolbarContent: View {
 }
 
 // MARK: - Toolbar button
-struct EditorToolbarButton: View {
 
+struct EditorToolbarButton: View {
     let systemImage: String
     let isActive: Bool
     let action: () -> Void
@@ -121,13 +88,11 @@ struct EditorToolbarButton: View {
                 .background(isActive ? Color.accentColor.opacity(0.2) : .clear, in: .rect(cornerRadius: 12))
         }
     }
-
 }
 
 // MARK: - UIView wrapper for input accessory
 
 final class EditorSwiftUIToolbar: UIView {
-
     private let hostingController: UIHostingController<EditorSwiftUIToolbarContent>
 
     override var intrinsicContentSize: CGSize {
@@ -137,11 +102,11 @@ final class EditorSwiftUIToolbar: UIView {
     init(textAttributes: TextAttributes) {
         hostingController = UIHostingController(rootView: EditorSwiftUIToolbarContent(textAttributes: textAttributes))
         hostingController.view.backgroundColor = .clear
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
         autoresizingMask = .flexibleWidth
 
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(hostingController.view)
         NSLayoutConstraint.activate([
             hostingController.view.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -151,13 +116,14 @@ final class EditorSwiftUIToolbar: UIView {
         ])
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 // MARK: -
+
 struct EditorWithSwiftUIToolbar: View {
     @State private var html = "<h1>EditorWithToolbar</h1><p>This editor <strong>has a toolbar</strong>. Focus the editor to reveal it. The toolbar can be scrolled horizontally.</p>"
     @StateObject private var textAttributes = TextAttributes()
