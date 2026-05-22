@@ -141,6 +141,9 @@ public class RichHTMLEditorView: PlatformView {
     /// The style of the text currently selected in the editor view.
     public private(set) var selectedTextAttributes = UITextAttributes()
 
+    /// The text currently selected in the editor view.
+    public private(set) var selectedText = ""
+
     /// The web view that displays the HTML and handle the input.
     public private(set) var webView: RichHTMLWebView!
 
@@ -310,7 +313,11 @@ public extension RichHTMLEditorView {
 // MARK: - WKNavigationDelegate
 
 extension RichHTMLEditorView: WKNavigationDelegate {
-    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
+    public func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void
+    ) {
         switch navigationAction.navigationType {
         case .linkActivated:
             if let url = navigationAction.request.url, delegate?.richHTMLEditorView(self, shouldHandleLink: url) == true {
@@ -385,6 +392,14 @@ extension RichHTMLEditorView: ScriptMessageHandlerDelegate {
             scrollView.scrollRectToVisible(scrollRect, animated: true)
         }
         #endif
+    }
+
+    func selectionDidChange(_ selection: String) {
+        guard selection != selectedText else {
+            return
+        }
+        selectedText = selection
+        delegate?.richHTMLEditorView(self, selectionDidChange: selection)
     }
 }
 
