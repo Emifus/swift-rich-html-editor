@@ -321,7 +321,7 @@ extension RichHTMLEditorView: WKNavigationDelegate {
         switch navigationAction.navigationType {
         case .linkActivated:
             if let url = navigationAction.request.url, delegate?.richHTMLEditorView(self, shouldHandleLink: url) == true {
-                decisionHandler(.cancel)
+                decisionHandler(.allow)
             } else {
                 decisionHandler(.allow)
             }
