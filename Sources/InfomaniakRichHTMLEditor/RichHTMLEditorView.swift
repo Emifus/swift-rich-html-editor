@@ -147,7 +147,7 @@ public class RichHTMLEditorView: PlatformView {
     /// The web view that displays the HTML and handle the input.
     public private(set) var webView: RichHTMLWebView!
     
-    /// Whether the underlying HTML can be editated
+    /// Whether the underlying HTML can be edited.
     public var editable = false
 
     // MARK: - Private properties
