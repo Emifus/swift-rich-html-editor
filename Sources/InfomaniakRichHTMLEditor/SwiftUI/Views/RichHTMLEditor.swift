@@ -35,8 +35,8 @@ public struct RichHTMLEditor: PlateformViewRepresentable {
     @Environment(\.handleLinkOpening) var handleLinkOpening
 
     @Binding public var html: String
+    @State public var editable: Bool
     public var selection: Binding<String>?
-    public var editable: Bool
 
     @ObservedObject public var textAttributes: TextAttributes
     public let spellCheckEnabled: Bool
@@ -56,6 +56,7 @@ public struct RichHTMLEditor: PlateformViewRepresentable {
 
     private func createPlatformView(context: Context) -> RichHTMLEditorView {
         let richHTMLEditorView = RichHTMLEditorView()
+        richHTMLEditorView.editable = editable
         richHTMLEditorView.delegate = context.coordinator
         richHTMLEditorView.html = html
         richHTMLEditorView.spellCheckEnabled = spellCheckEnabled
