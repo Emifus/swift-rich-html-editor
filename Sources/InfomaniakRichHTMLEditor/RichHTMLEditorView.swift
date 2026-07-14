@@ -148,7 +148,11 @@ public class RichHTMLEditorView: PlatformView {
     public private(set) var webView: RichHTMLWebView!
     
     /// Whether the underlying HTML can be edited.
-    public var editable = false
+    public var editable: Bool = false {
+        didSet {
+            loadWebViewPage()
+        }
+    }
 
     // MARK: - Private properties
 
