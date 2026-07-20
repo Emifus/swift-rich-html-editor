@@ -1,14 +1,13 @@
-// swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 6.2
 
 import PackageDescription
 
-let package = Package(
+let package: Package = Package(
     name: "InfomaniakRichHTMLEditor",
     platforms: [
-        .iOS(.v14),
-        .visionOS(.v1),
-        .macOS(.v11)
+        .iOS(.v18),
+        .visionOS(.v2),
+        .macOS(.v15)
     ],
     products: [
         .library(
@@ -20,7 +19,7 @@ let package = Package(
         .target(
             name: "InfomaniakRichHTMLEditor",
             resources: [
-                .process("Resources/")
+                .process("Resources")
             ]
         ),
         .testTarget(

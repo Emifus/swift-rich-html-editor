@@ -1,0 +1,137 @@
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+
+import InfomaniakRichHTMLEditor
+import SwiftUI
+
+struct EditorSwiftUIToolbarContent: View {
+    @ObservedObject var textAttributes: TextAttributes
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 4) {
+                EditorToolbarButton(systemImage: "bold", isActive: textAttributes.hasBold) {
+                    textAttributes.bold()
+                }
+                EditorToolbarButton(systemImage: "italic", isActive: textAttributes.hasItalic) {
+                    textAttributes.italic()
+                }
+                EditorToolbarButton(systemImage: "underline", isActive: textAttributes.hasUnderline) {
+                    textAttributes.underline()
+                }
+                EditorToolbarButton(systemImage: "strikethrough", isActive: textAttributes.hasStrikethrough) {
+                    textAttributes.strikethrough()
+                }
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "list.number", isActive: textAttributes.hasOrderedList) {
+                    textAttributes.orderedList()
+                }
+                EditorToolbarButton(systemImage: "list.bullet", isActive: textAttributes.hasUnorderedList) {
+                    textAttributes.unorderedList()
+                }
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "decrease.indent", isActive: false) {
+                    textAttributes.outdent()
+                }
+                EditorToolbarButton(systemImage: "increase.indent", isActive: false) {
+                    textAttributes.indent()
+                }
+
+                Divider()
+                    .frame(height: 20)
+
+                EditorToolbarButton(systemImage: "arrow.uturn.backward", isActive: false) {
+                    textAttributes.undo()
+                }
+                EditorToolbarButton(systemImage: "arrow.uturn.forward", isActive: false) {
+                    textAttributes.redo()
+                }
+            }
+            .padding(.horizontal, 4)
+        }
+        .scrollIndicators(.hidden)
+        .frame(height: 44)
+        .background(.ultraThinMaterial, in: .rect(cornerRadius: 12))
+        .padding(.horizontal)
+    }
+}
+
+// MARK: - Toolbar button
+
+struct EditorToolbarButton: View {
+    let systemImage: String
+    let isActive: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.body)
+                .frame(width: 36, height: 36)
+                .foregroundStyle(isActive ? Color.accentColor : .primary)
+                .background(isActive ? Color.accentColor.opacity(0.2) : .clear, in: .rect(cornerRadius: 12))
+        }
+    }
+}
+
+// MARK: - UIView wrapper for input accessory
+#if canImport(UIKit)
+final class EditorSwiftUIToolbar: UIView {
+    private let hostingController: UIHostingController<EditorSwiftUIToolbarContent>
+
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: UIView.noIntrinsicMetric, height: 44)
+    }
+
+    init(textAttributes: TextAttributes) {
+        hostingController = UIHostingController(rootView: EditorSwiftUIToolbarContent(textAttributes: textAttributes))
+        hostingController.view.backgroundColor = .clear
+        hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        super.init(frame: .zero)
+        addSubview(hostingController.view)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+#endif
+
+// MARK: -
+
+struct EditorWithSwiftUIToolbar: View {
+    @State private var html = "<h1>EditorWithToolbar</h1><p>This editor <strong>has a toolbar</strong>. Focus the editor to reveal it. The toolbar can be scrolled horizontally.</p>"
+    @StateObject private var textAttributes = TextAttributes()
+
+    var body: some View {
+        RichHTMLEditor(html: $html, textAttributes: textAttributes)
+            #if canImport(UIKit)
+        .editorScrollable(true)
+            #endif
+            #if os(iOS)
+        .editorInputAccessoryView(EditorSwiftUIToolbar(textAttributes: textAttributes))
+        #endif
+    }
+}
+
+#Preview {
+    EditorWithSwiftUIToolbar()
+}

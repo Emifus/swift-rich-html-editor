@@ -31,7 +31,8 @@ extension PlatformColor {
     }
 
     convenience init?(rgba: String) {
-        let rgbValues = rgba
+        let rgbValues =
+            rgba
             .trimmingCharacters(in: CharacterSet(charactersIn: "rgba()"))
             .split(separator: ",")
             .compactMap { Float($0.trimmingCharacters(in: .whitespaces)) }

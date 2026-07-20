@@ -117,7 +117,7 @@ final class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
         }
         logger.info("[ScriptLog] \(log)")
     }
-    
+
     private func selectionDidChange(_ message: WKScriptMessage) {
         guard let selection = message.body as? String else {
             return

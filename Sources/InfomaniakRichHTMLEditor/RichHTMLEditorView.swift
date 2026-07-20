@@ -146,7 +146,7 @@ public class RichHTMLEditorView: PlatformView {
 
     /// The web view that displays the HTML and handle the input.
     public private(set) var webView: RichHTMLWebView!
-    
+
     /// Whether the underlying HTML can be edited.
     public var editable: Bool = false {
         didSet {
@@ -216,7 +216,7 @@ public extension RichHTMLEditorView {
     ///
     /// - Parameter cssURL: URL to the CSS file.
     func injectAdditionalCSS(_ cssURL: URL) {
-        guard let css = try? String(contentsOf: cssURL) else { return }
+        guard let css = try? String(contentsOf: cssURL, encoding: .utf8) else { return }
         injectAdditionalCSS(css)
     }
 }
@@ -280,7 +280,7 @@ public extension RichHTMLEditorView {
 
     private func loadWebViewPage() {
         let indexName = editable ? "editableIndex" : "staticIndex"
-        
+
         guard let indexURL = Bundle.module.url(forResource: indexName, withExtension: "html") else {
             return
         }

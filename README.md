@@ -1,60 +1,29 @@
 # Infomaniak Rich HTML Editor
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FInfomaniak%2Fswift-rich-html-editor%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Infomaniak/swift-rich-html-editor)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FInfomaniak%2Fswift-rich-html-editor%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/Infomaniak/swift-rich-html-editor)
+**A seamless <abbr title="what you see is what you get">WYSIWYG</abbr> text editing experience for WebKit-available Apple platforms**
 
-The **Infomaniak Rich HTML Editor** is a powerful Swift package designed to provide a seamless WYSIWYG (What You See Is What You Get) text editing experience across iOS, macOS, and visionOS platforms. Leveraging the power of the `contenteditable` HTML attribute, this editor allows you to effortlessly edit HTML content.
+This fork of [Infomaniak Rich HTML Editor](https://github.com/Infomaniak/swift-rich-html-editor) adapts the project for use in [Thunderbird iOS.](https://github.com/thunderbird/thunderbird-ios)
 
-Built with **UIKit** and **AppKit** thanks to WebKit, it also includes a **SwiftUI** port, making it easy to integrate into modern Swift apps.
+## Features
 
-<table>
-    <tr>
-        <td>
-            <img src="Assets/ios.webp" alt="iOS sample app" style="max-height: 250px; width: auto;">
-        </td>
-        <td>
-            <img src="Assets/macos.webp" alt="iOS sample app" style="max-height: 250px; width: auto;">
-        </td>
-        <td>
-            <img src="Assets/visionos.webp" alt="iOS sample app" style="max-height: 250px; width: auto;">
-        </td>
-    </tr>
-</table>
+- **HTML content editing**: Full support for viewing and editing HTML content directly
+- **Many formatting commands**: bold, italic, links, images and more
+- **Observable SwiftUI API**: Bindings for HTML document and selection/editor state
+- **Cross platform**: Works with any [WebKit-available Apple platform](https://developer.apple.com/documentation/webkit)
 
-Looking for an Android equivalent? Check out the Kotlin version of the editor here: [Infomaniak/android-rich-html-editor](https://github.com/Infomaniak/android-rich-html-editor)
+## Examples
 
-## ✍️ About
+Add this repository URL to your Xcode project's package dependencies or to your [`Package.swift` dependencies](https://developer.apple.com/documentation/packagedescription/package/dependency):
 
-### Features
-
-- **HTML Content Editing**: Full support for viewing and editing HTML content directly.
-- **Wide range of commands**: Many commands are available to format text, from simple commands like bold to more advanced ones like link creation.
-- **Cross-Platform Support:** Compatible with iOS, macOS, and visionOS.
-- **SwiftUI API**: A dedicated port for SwiftUI, ensuring modern and declarative UI design compatibility.
-
-### Installation
-
-You can install the package via Swift Package Manager. Add the following line to your Package.swift file:
 ```swift
-.package(url: "https://github.com/Infomaniak/swift-rich-html-editor.git", from: "1.0.0")
+import PackageDescription
+
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/thunderbird/swift-rich-html-editor", branch: "main")
+    ]
+)
 ```
-
-### Usage
-
-#### UIKit and AppKit
-
-You can create the editor view and then add it to the view hierarchy.
-```swift
-import InfomaniakRichHTMLEditor
-import UIKit
-
-let editor = RichHTMLEditorView()
-view.addSubview(editor)
-```
-
-To respond to editor's events, you can conform to `RichHTMLEditorViewDelegate`.
-
-#### SwiftUI
 
 The SwiftUI view is called `RichHTMLEditor` and takes two arguments:
 - `html: Binding<String>` the HTML content of the editor
@@ -77,8 +46,8 @@ struct ContentView: View {
 The object `TextAttributes` contains various attributes about the current style of the selected text. Theses properties are read-only and are automatically updated by the editor.
 To update the style, you should call the corresponding functions such as `bold()`.
 
-Many modifiers are available to customize the editor and respond to editor's events.
-Here is a non-exhaustive list of modifiers:
+Many modifiers are available to customize the editor and respond to editor's events:
+
 ```swift
 RichHTMLEditor(html: $html, textAttributes: textAttributes)
     .editorScrollable(true)
@@ -98,33 +67,14 @@ RichHTMLEditor(html: $html, textAttributes: textAttributes)
     }
 ```
 
-### Customize the editor
+Additionally, you can customize the editor with CSS. Use the `#swift-rich-html-editor` selector:
 
-You can customize the editor with CSS.
-To target the editor, you should use the `#swift-rich-html-editor` selector.
-
-For example:
 ```css
 #swift-rich-html-editor {
     padding: 16px;
 }
 ```
 
-## 📖 Documentation
+### Example Project
 
-Public types are documented, and three sample projects are available to help you implement the editor.
-
-## 🔍 Sample Projects
-
-You can find 3 sample projects in the [Examples](Examples) folder:
-- A [project built with UIKit](Examples/Example%20iOS/) for iOS
-- A [project built with AppKit](Examples/Example%20macOS/) for macOS
-- A [project built with SwiftUI](Examples/Example%20SwiftUI/) for iOS/macOS/visionOS
-
-## 📱 Apps using InfomaniakRichHTMLEditor
-
-<a href="https://github.com/Infomaniak/ios-kMail">
-    <img src="Assets/infomaniak-mail.webp" style="max-height: 300px; width: auto;" alt="Find App">
-</a>
-
-[Infomaniak Mail](https://github.com/Infomaniak/ios-kMail) allows you to manage your Infomaniak addresses in a completely secure environment.
+[Example](Example) folder contains an Xcode project that builds a SwiftUI app for macOS and iOS.

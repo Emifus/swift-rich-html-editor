@@ -19,7 +19,7 @@ extension WKUserContentController {
     }
 
     func addUserScript(named filename: String, injectionTime: WKUserScriptInjectionTime, forMainFrameOnly: Bool) throws {
-        guard let url = Bundle.module.url(forResource: filename, withExtension: "js"), let document = try? String(contentsOf: url)
+        guard let url = Bundle.module.url(forResource: filename, withExtension: "js"), let document = try? String(contentsOf: url, encoding: .utf8)
         else { throw EditorError.impossibleToLoadWKUserScript(filename: filename) }
 
         addUserScript(WKUserScript(source: document, injectionTime: injectionTime, forMainFrameOnly: true))
