@@ -124,10 +124,10 @@ struct EditorWithSwiftUIToolbar: View {
     var body: some View {
         RichHTMLEditor(html: $html, textAttributes: textAttributes)
             #if canImport(UIKit)
-            .editorScrollable(true)
+        .editorScrollable(true)
             #endif
             #if os(iOS)
-            .editorInputAccessoryView(EditorSwiftUIToolbar(textAttributes: textAttributes))
+        .editorInputAccessoryView(EditorSwiftUIToolbar(textAttributes: textAttributes))
             #endif
     }
 }
