@@ -128,7 +128,7 @@ struct EditorWithSwiftUIToolbar: View {
             #endif
             #if os(iOS)
         .editorInputAccessoryView(EditorSwiftUIToolbar(textAttributes: textAttributes))
-            #endif
+        #endif
     }
 }
 
